@@ -6,7 +6,7 @@ A C++ program to validate credit card numbers using the Luhn Algorithm, ensuring
 ## Tech Stack Used
 - Language: C++
 - Library: Standard Template Library (STL)
-- 
+  
 ## Features
 - Validates credit card numbers using the Luhn Algorithm.
 
