@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Validator</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(120deg, #0c2d62, #afc2e4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            
+        }
+
+        label{
+            line-height: 2;
+        }
+
+        .container {
+            background: linear-gradient(120deg, #ffffff, #c5daff);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px 30px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #4c9eaf;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            border-color: #456ba0;
+            box-shadow: 0 0 10px #514caf;
+        }
+
+        button {
+            background-color: #4c98af;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #4845a0;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: rgb(2, 88, 2);
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: red;
+        }
+
+        .card-type {
+            margin-bottom: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Card Type CSS */
+        .visa {
+            color: #1a1f71;
+        }
+
+        .mastercard {
+            color: #ea5d2a;
+        }
+
+        .amex {
+            color: #0079c2;
+        }
+
+        .unknown {
+            color: #393737;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Card Validator</h1>
+        <form id="validatorForm">
+            <label for="cardNumber">Enter Credit/Debit Card Number:</label>
+            <input type="text" id="cardNumber" placeholder="Enter card number" required>
+            <button type="submit">Validate</button>
+        </form>
+        <div id="result"></div>
+        <div class="card-type" id="cardType"></div>
+    </div>
+
+    <script>
+        document.getElementById('validatorForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+            const resultElement = document.getElementById('result');
+            const cardTypeElement = document.getElementById('cardType');
+
+            // Luhn Algorithm in JavaScript
+            function validateCardNumber(cardNumber) {
+                let sum = 0;
+                let isSecond = false;
+
+                for (let i = cardNumber.length - 1; i >= 0; i--) {
+                    let digit = parseInt(cardNumber[i]);
+
+                    if (isSecond) {
+                        digit *= 2;
+                        if (digit > 9) {
+                            digit -= 9;
+                        }
+                    }
+                    sum += digit;
+                    isSecond = !isSecond;
+                }
+
+                return sum % 10 === 0;
+            }
+
+            function detectCardType(cardNumber) {
+                if (/^4/.test(cardNumber)) {
+                    return 'visa';
+                } else if (/^5[1-5]/.test(cardNumber)) {
+                    return 'mastercard';
+                } else if (/^3[47]/.test(cardNumber)) {
+                    return 'amex';
+                } else {
+                    return 'unknown';
+                }
+            }
+
+            const cardType = detectCardType(cardNumber);
+
+            if (validateCardNumber(cardNumber)) {
+                resultElement.textContent = `${cardNumber} is valid.`;
+                resultElement.classList.add('success');
+                resultElement.classList.remove('error');
+                cardTypeElement.textContent = `Card Type: ${cardType.charAt(0).toUpperCase() + cardType.slice(1)}`;
+                cardTypeElement.classList = `card-type ${cardType}`;
+            } else {
+                resultElement.textContent = `${cardNumber} is not valid.`;
+                resultElement.classList.add('error');
+                resultElement.classList.remove('success');
+                cardTypeElement.textContent = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
