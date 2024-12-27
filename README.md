@@ -28,5 +28,17 @@ A C++ program to validate credit card numbers using the Luhn Algorithm, ensuring
     4) Sum all the processed digits.
     5) If the total is divisible by 10, the number is valid.
 
+## Recent Updates:
+
+- Added real-time suggestions (e.g., "Please enter a valid 16-digit card number").
+- Card type Detection(Visa, MasterCard, Amex).
+- Improved user feedback with background colors indicating valid or invalid results.
+
+## Screenshots
+
+![card-validation](https://github.com/user-attachments/assets/44bbed42-2a49-4e9c-984f-ac26639e678d)
+
+
+
 
 
